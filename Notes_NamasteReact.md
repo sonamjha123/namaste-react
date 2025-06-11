@@ -118,4 +118,101 @@ class MyComponent extends Component {
   }
 }
 ```
-In this example, the API call is made in `componentDidMount`, and the component renders a loading state until the data is fetched. Once the data is available, the component updates with the fetched data.
+
+---
+
+## 🔷 **What is a Higher Order Component (HOC)?**
+
+A **Higher Order Component (HOC)** is a function that **takes a component and returns a new component** with additional functionality.
+
+👉 **It's similar to higher-order functions in JavaScript.**
+👉 HOCs are commonly used for **code reuse, logic abstraction, and prop manipulation**.
+
+---
+
+## 🔷 **Basic Syntax:**
+
+```jsx
+const higherOrderComponent = (WrappedComponent) => {
+  return (props) => {
+    // Add logic here
+    return <WrappedComponent {...props} />;
+  };
+};
+```
+
+---
+
+## 🔷 **Simple Example: Logging Props**
+
+```jsx
+import React from 'react';
+
+// HOC definition
+const withLogger = (WrappedComponent) => {
+  return (props) => {
+    console.log('Props:', props);  // Side-effect: logging props
+    return <WrappedComponent {...props} />;
+  };
+};
+
+// Regular Component
+const Hello = ({ name }) => {
+  return <h1>Hello, {name}!</h1>;
+};
+
+// Enhanced Component
+const HelloWithLogger = withLogger(Hello);
+
+// Usage
+export default function App() {
+  return <HelloWithLogger name="John" />;
+}
+```
+
+---
+
+## 🔷 **Example 2: Authentication Check HOC**
+
+```jsx
+const withAuth = (WrappedComponent) => {
+  return (props) => {
+    const isAuthenticated = false; // Simulated auth check
+    if (!isAuthenticated) {
+      return <p>Please log in to continue.</p>;
+    }
+    return <WrappedComponent {...props} />;
+  };
+};
+
+const Dashboard = () => <h2>Dashboard Page</h2>;
+
+const ProtectedDashboard = withAuth(Dashboard);
+
+export default function App() {
+  return <ProtectedDashboard />;
+}
+```
+
+---
+
+## 🔷 **When to use HOC in Real Projects (for interview answer):**
+
+✅ Reusing logic (like authentication, logging, fetching data)
+✅ Injecting props conditionally
+✅ Handling permissions or roles
+✅ Implementing cross-cutting concerns like theming, tracking, error boundaries, etc.
+
+---
+
+## 🔷 **Important Notes (for interviews):**
+
+| Point                              | Explanation                                                  |
+| ---------------------------------- | ------------------------------------------------------------ |
+| 🔹 Display Name                    | Set `displayName` on HOCs for better debugging.              |
+| 🔹 Don't mutate                    | Avoid changing the original component’s behavior directly.   |
+| 🔹 Ref forwarding                  | HOCs may block refs—use `React.forwardRef()` if needed.      |
+| 🔹 Compose multiple HOCs carefully | Example: `export default withRouter(withAuth(MyComponent));` |
+
+---
+
