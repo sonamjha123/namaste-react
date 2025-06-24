@@ -216,3 +216,90 @@ export default function App() {
 
 ---
 
+Sure! Let's break this down clearly.
+
+---
+
+## **1. Pure Functions**
+
+A **pure function** is a function that:
+
+* **Given the same inputs, always returns the same output.**
+* **Does not cause any side effects** (like modifying global variables, DOM manipulation, API calls, etc.).
+
+### **Example of Pure Function:**
+
+```javascript
+function add(a, b) {
+  return a + b;
+}
+
+console.log(add(2, 3)); // Always returns 5
+console.log(add(2, 3)); // Still returns 5
+```
+
+✅ **Why is this pure?**
+
+* Output depends only on the inputs (`a` and `b`).
+* No modification of external state or variables.
+* No side effects.
+
+---
+
+## **2. Impure Functions**
+
+An **impure function** is a function that:
+
+* **May return different results for the same inputs**, or
+* **Causes side effects** (like logging to console, modifying global variables, changing DOM, etc.).
+
+### **Example of Impure Function:**
+
+```javascript
+let count = 0;
+
+function increment() {
+  count++;
+  return count;
+}
+
+console.log(increment()); // 1
+console.log(increment()); // 2 (same input, but different result)
+```
+
+✅ **Why is this impure?**
+
+* It modifies the external variable `count`.
+* Output changes even though no arguments are passed.
+* Side effect: modifies global state.
+
+---
+
+### **Another Impure Function Example:**
+
+```javascript
+function greet(name) {
+  console.log("Hello " + name);
+}
+
+greet("Alice");
+```
+
+✅ **Why impure?**
+
+* Causes a side effect: logs to the console.
+* Its behavior affects the outside world.
+
+---
+
+## **Summary Table:**
+
+| **Aspect**        | **Pure Function** | **Impure Function**            |
+| ----------------- | ----------------- | ------------------------------ |
+| Output depends on | Inputs only       | Inputs + external factors      |
+| Side effects      | None              | Yes (e.g., modify global vars) |
+| Predictable       | Always            | Not always                     |
+| Example           | `add(a, b)`       | `increment()`, `console.log()` |
+
+---
+
