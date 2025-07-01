@@ -344,10 +344,10 @@ Redux Toolkit addresses 3 major concerns:
 👉 **Write Data**
 
 ```
-Add Button Click → dispatch(action) → reducer updates slice → store updates
+Click on Add Button → dispatch(action) → which call reducer function which modifies slice of store → store updates
 ```
 
-👉 **Read Data**
+👉 **Read Data** - we use Selector 
 
 ```
 Component → selector reads from store → component auto updates (subscriber)
