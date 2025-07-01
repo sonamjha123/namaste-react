@@ -365,6 +365,21 @@ npm install @reduxjs/toolkit react-redux
 
 2️⃣ Build the store.
 3️⃣ Connect store to your React app (use `<Provider>`).
+- Provide store to our App - use Provider and wrap in App.js
+```
+Eg
+return (
+    <Provider store={appStore}>
+    <UserContext.Provider value={{ loggedInUser: userName , setUserName }}>
+      <div className="app">
+        <Header />
+        {/* Outlet is used to render the child routes */}
+        <Outlet />
+      </div>
+    </UserContext.Provider>
+    </Provider>
+  );
+```
 4️⃣ Create slice (e.g. `cartSlice`).
 5️⃣ Use `dispatch(action)` to write data.
 6️⃣ Use `useSelector` to read data.
@@ -397,9 +412,7 @@ const cartSlice = createSlice({
 export const { addItem, removeItem, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
 ```
-
 ---
-
 ### 📌 Connect to React App
 
 ```javascript
@@ -425,6 +438,19 @@ import store from "./store";
 ```
 
 ---
+### To read cartItems in Header.js
+```
+subscribIng to the store using useSelector
+ // Subscribe to the Redux store using useSelector
+const cartItems = useSelector((store) => store.cart.items);
+
+// Display cart item count in header
+<li className="px-4">
+  Cart ({cartItems.length} items)
+</li>
+
+```
+
 
 ### 📌 Dispatch & Selector Usage
 
