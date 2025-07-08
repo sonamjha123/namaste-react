@@ -465,5 +465,29 @@ const items = useSelector((store) => store.cart.items);
 ```
 
 ---
+### Why to use e.preventDefault()
 
+`e.preventDefault()` is a method that prevents the default behavior of an event from occurring. It's commonly used in JavaScript to prevent the default behavior of HTML elements, such as links, forms, and buttons.
+
+Here are some scenarios where you might want to use `e.preventDefault()`:
+
+* **Preventing page reload**: When a form is submitted, the default behavior is to reload the page. By calling `e.preventDefault()`, you can prevent the page from reloading and instead handle the form submission programmatically.
+* **Preventing link navigation**: When a link is clicked, the default behavior is to navigate to the linked page. By calling `e.preventDefault()`, you can prevent the navigation and instead handle the click event programmatically.
+* **Preventing default button behavior**: When a button is clicked, the default behavior is to submit a form or perform some other action. By calling `e.preventDefault()`, you can prevent the default behavior and instead handle the click event programmatically.
+
+Here's an example:
+```javascript
+// Prevent a link from navigating to a new page
+document.getElementById('myLink').addEventListener('click', function(e) {
+  e.preventDefault();
+  console.log('Link clicked, but navigation prevented!');
+});
+
+// Prevent a form from reloading the page on submission
+document.getElementById('myForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  console.log('Form submitted, but page not reloaded!');
+});
+```
+By using `e.preventDefault()`, you can take control of the event handling and prevent the default behavior from occurring, allowing you to implement custom logic instead.
 
