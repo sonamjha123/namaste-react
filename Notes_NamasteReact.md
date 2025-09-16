@@ -345,50 +345,7 @@ app.use(cors({ origin: 'https://websiteA.com', credentials: true }));
 ------------------------------------------------------------------------------------------------------
 
 
-In React, `componentDidMount` is a lifecycle method that is called after a component has been rendered to the DOM. Making API calls in `componentDidMount` is a common pattern for several reasons:
 
-### 1. Ensures the component is mounted
-
-By making API calls in `componentDidMount`, you ensure that the component has been rendered and is mounted in the DOM. This is important because some APIs may require access to the DOM or its elements.
-
-### 2. Prevents unnecessary API calls
-
-If you make API calls in the `constructor` or `render` method, they may be called multiple times, leading to unnecessary requests. `componentDidMount` is only called once, after the initial render, so you can be sure that the API call is only made when the component is first mounted.
-
-### 3. Allows for async data fetching
-
-`componentDidMount` is a good place to fetch data asynchronously, as it allows the component to render initially with a loading state, and then update with the fetched data when it becomes available.
-
-### 4. Is a good practice for separation of concerns
-
-Making API calls in `componentDidMount` helps to separate the concerns of your component. The `render` method should only be concerned with rendering the component, while `componentDidMount` can handle any necessary side effects, such as API calls.
-
-Here's an example:
-```jsx
-import React, { Component } from 'react';
-
-class MyComponent extends Component {
-  state = {
-    data: null,
-  };
-
-  componentDidMount() {
-    fetch('https://api.example.com/data')
-      .then(response => response.json())
-      .then(data => this.setState({ data }));
-  }
-
-  render() {
-    if (!this.state.data) {
-      return <div>Loading...</div>;
-    }
-
-    return <div>Data: {this.state.data}</div>;
-  }
-}
-```
-
----
 ## What exactly is React : createElement, createRoot, render 
 
 Here’s an **optimized version** of your notes for GitHub — clean, well-structured, and ready for a repository. I preserved all your content but organized it neatly with comments and formatting for clarity.
@@ -533,6 +490,50 @@ ReactDOM.createRoot(document.getElementById("root2"))
 ---
 
 So yes — any `<h1>` (or other HTML elements) **above or below the root div will remain intact**, React won’t replace them.
+
+---
+In React, `componentDidMount` is a lifecycle method that is called after a component has been rendered to the DOM. Making API calls in `componentDidMount` is a common pattern for several reasons:
+
+### 1. Ensures the component is mounted
+
+By making API calls in `componentDidMount`, you ensure that the component has been rendered and is mounted in the DOM. This is important because some APIs may require access to the DOM or its elements.
+
+### 2. Prevents unnecessary API calls
+
+If you make API calls in the `constructor` or `render` method, they may be called multiple times, leading to unnecessary requests. `componentDidMount` is only called once, after the initial render, so you can be sure that the API call is only made when the component is first mounted.
+
+### 3. Allows for async data fetching
+
+`componentDidMount` is a good place to fetch data asynchronously, as it allows the component to render initially with a loading state, and then update with the fetched data when it becomes available.
+
+### 4. Is a good practice for separation of concerns
+
+Making API calls in `componentDidMount` helps to separate the concerns of your component. The `render` method should only be concerned with rendering the component, while `componentDidMount` can handle any necessary side effects, such as API calls.
+
+Here's an example:
+```jsx
+import React, { Component } from 'react';
+
+class MyComponent extends Component {
+  state = {
+    data: null,
+  };
+
+  componentDidMount() {
+    fetch('https://api.example.com/data')
+      .then(response => response.json())
+      .then(data => this.setState({ data }));
+  }
+
+  render() {
+    if (!this.state.data) {
+      return <div>Loading...</div>;
+    }
+
+    return <div>Data: {this.state.data}</div>;
+  }
+}
+```
 
 ---
 ## 🔷 **What is a Higher Order Component (HOC)?**
