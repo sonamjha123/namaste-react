@@ -208,7 +208,69 @@ That’s why large companies often combine CDNs + **multi-region servers** + **f
 ## CORS:
 
 **CORS** is a **security feature** implemented by **browsers** that **controls how web pages can request resources from a different domain** than the one that served the web page.
+Ah! You’re asking about the `crossorigin` attribute in your `<script>` tags. Let’s break it down carefully.
 
+---
+
+## 🔹 1. What **Cross-Origin** Means
+
+“Cross-origin” refers to **resources loaded from a different domain (origin) than your webpage**.
+
+* An **origin** is defined by **protocol + domain + port**.
+
+  * Example:
+
+    * `https://yourwebsite.com` → origin A
+    * `https://unpkg.com` → origin B
+
+If your page is on `https://yourwebsite.com` and it loads a script from `https://unpkg.com`, that’s a **cross-origin request**.
+
+---
+
+## 🔹 2. Why `crossorigin` is Needed
+
+Browsers enforce **CORS (Cross-Origin Resource Sharing)** rules for security.
+
+The `crossorigin` attribute on `<script>` tells the browser:
+
+1. **It’s okay to request this script from a different origin.**
+2. **How to handle credentials (cookies, HTTP auth) when fetching it.**
+
+It can have **3 modes**:
+
+| Value             | Meaning                                                                                         |
+| ----------------- | ----------------------------------------------------------------------------------------------- |
+| `anonymous`       | Send request **without credentials** (default if you just write `crossorigin`).                 |
+| `use-credentials` | Send request **with credentials** (cookies, HTTP auth, client certs).                           |
+| omitted           | Browser may block certain operations (like reading script for integrity check) if cross-origin. |
+
+---
+
+### 🔹 3. Example in Your Case
+
+```html
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+```
+
+* Your page is on `https://mywebsite.com`.
+* Script is on `https://unpkg.com`.
+* `crossorigin` allows the browser to **fetch React safely** from unpkg.
+* This is especially needed if you are also using **Subresource Integrity (SRI)**:
+
+```html
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js" integrity="sha384-XXXX"></script>
+```
+
+Without `crossorigin`, SRI might fail because the browser cannot verify the hash for cross-origin scripts.
+
+---
+
+## 🔹 4. Key Points
+
+* **Cross-origin scripts** are scripts loaded from another domain.
+* `crossorigin` ensures the browser fetches them safely and can apply security checks.
+* Usually, for CDN scripts like React/ReactDOM, you use `crossorigin="anonymous"`.
+* If the script requires cookies for access, use `crossorigin="use-credentials"` (rare for public CDNs).
 ---
 
 ### Real-World Analogy
@@ -327,7 +389,152 @@ class MyComponent extends Component {
 ```
 
 ---
+## What exactly is React : createElement, createRoot, render 
 
+Here’s an **optimized version** of your notes for GitHub — clean, well-structured, and ready for a repository. I preserved all your content but organized it neatly with comments and formatting for clarity.
+
+---
+
+# React Basic Example Notes
+
+## index.html
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>This is the title of the webpage!</title>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <!-- Root div where React will render -->
+    <div id="root"></div>
+
+    <!-- React & ReactDOM CDN -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <!-- Main React script -->
+    <script src="index.js"></script>
+  </body>
+</html>
+```
+
+---
+
+## index.js
+
+```javascript
+/*
+Structure to be rendered:
+
+<div id="parent">
+    <div id="child">
+        <h1>This is h1 tag</h1>
+        <h2>This is h2 tag</h2>
+    </div>
+</div>
+
+ReactElement => Object => HTML element (browser understands this)
+*/
+
+// Creating parent div with child and headings
+const parent = React.createElement(
+  "div",
+  { id: "parent" },
+  React.createElement(
+    "div",
+    { id: "child" },
+    [
+      React.createElement("h1", {}, "This is h1 tag"),
+      React.createElement("h2", {}, "This is h2 tag")
+    ]
+  )
+);
+
+// Rendering the parent element
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(parent);
+
+// Create a separate heading element and render (optional)
+/*
+const heading = React.createElement("h1", { id: "heading" }, "Namaste React");
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(heading);
+*/
+```
+
+---
+
+### ✅ Notes / Key Points
+
+1. **React.createElement** creates a React element (JavaScript object) that React converts to actual DOM elements in the browser.
+2. **Rendering**: `ReactDOM.createRoot(...).render(element)` is used to render React elements.
+3. **Cross-origin CDN scripts**: Required for loading React from another domain safely.
+4. You can create multiple elements and render them as children using **arrays**.
+5. Optional headings can be rendered separately by uncommenting the last block.
+
+#### Note: if you have h1 tags above or below div id = root then u can use react only in that div and rest h1 tags will not be replaced
+Exactly ✅ — that’s how **React works with the DOM**. Let me explain clearly.
+
+---
+
+### 🔹 Key Idea
+
+React **only controls the DOM elements inside the root container** you specify.
+
+Example:
+
+```html
+<body>
+  <h1>This is outside React</h1>
+  <div id="root"></div>
+  <h1>This is also outside React</h1>
+</body>
+```
+
+```javascript
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(React.createElement("h1", {}, "This is rendered by React"));
+```
+
+* React will **only render inside `<div id="root">`**.
+* The two `<h1>` tags outside of `root` will **not be replaced or affected**.
+
+---
+
+### 🔹 Why this matters
+
+1. **Scoped rendering**: React manages **only the elements inside its root container**.
+2. **Non-intrusive**: You can mix React with normal HTML without overwriting other content.
+3. **Multiple roots**: You can have **multiple React roots** in a single page:
+
+```html
+<div id="root1"></div>
+<div id="root2"></div>
+```
+
+```javascript
+ReactDOM.createRoot(document.getElementById("root1"))
+  .render(React.createElement("h1", {}, "Hello from root1"));
+
+ReactDOM.createRoot(document.getElementById("root2"))
+  .render(React.createElement("h1", {}, "Hello from root2"));
+```
+
+* Each root is **independent** and React doesn’t touch elements outside its container.
+
+---
+
+So yes — any `<h1>` (or other HTML elements) **above or below the root div will remain intact**, React won’t replace them.
+
+---
 ## 🔷 **What is a Higher Order Component (HOC)?**
 
 A **Higher Order Component (HOC)** is a function that **takes a component and returns a new component** with additional functionality.
