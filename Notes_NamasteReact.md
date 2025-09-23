@@ -1,10 +1,11 @@
 # NAMASTE REACT _ NOTES
-## Episode01: Inception
+-------------------------
+## 1. Episode01: Inception
 
 ### Topics covered:
 - cdn
 - React-Hello world using createElement, createRoot and render
-- 
+
 
 ## CDN : Detailed explanation
 ### 🔹 1. What a CDN actually does
@@ -494,14 +495,105 @@ ReactDOM.createRoot(document.getElementById("root2"))
 
 * Each root is **independent** and React doesn’t touch elements outside its container.
 
----
+---------------------------------------------------------------------------------
 
-# Episode 02: Igniting our App
+# 2. Episode 02: Igniting our App
 ### Topics covered:
 - npm, parcel
 - nodemodules
 - Bundlers
-- React app file structure 
+- React app file structure
+---
+### Quick revision Notes
+Got it 👍
+I’ll clean this up into quick revision bullet points (concise, structured, optimized) so you can directly use it in your GitHub notes.
+
+⸻
+
+📦 NPM & Bundlers (Revision Notes)
+
+NPM Basics
+	•	NPM = Node Package Manager (manages dependencies & packages).
+	•	Initialize project → npm init.
+	•	Dependencies:
+	•	Normal dependencies = required in production.
+	•	Dev dependencies = only for development (-D flag).
+	•	package-lock.json → locks exact package versions.
+	•	Versioning:
+	•	^ → minor + patch updates allowed.
+	•	~ → only patch updates allowed.
+
+⸻
+
+Bundlers
+	•	Bundler = tool that prepares code for production.
+	•	Examples: Webpack, Parcel, Vite.
+	•	Job of bundlers:
+	•	Bundle multiple files.
+	•	Minify & optimize code.
+	•	Code splitting.
+	•	Differential bundling (support older browsers).
+	•	Tree shaking (remove unused code).
+	•	Image optimization.
+
+⸻
+
+Create React App (CRA)
+	•	CRA internally uses Webpack.
+	•	We use Parcel → simpler & zero-config.
+
+⸻
+
+Using Parcel
+	•	Install: npm install -D parcel.
+	•	Run: npx parcel index.html.
+	•	Build for production: npx parcel build index.html.
+	•	Features:
+	•	Dev server with HMR (Hot Module Replacement).
+	•	File watching (C++ algorithm).
+	•	Caching (.parcel-cache) → faster rebuilds.
+	•	Consistent hashing for caching.
+	•	Better error suggestions.
+	•	HTTPS hosting support.
+	•	Cache & dist folders → auto-regenerated, add to .gitignore.
+	•	Configure Browserlist in package.json to specify supported browsers.
+
+⸻
+
+React Setup with Parcel
+	•	Install React:
+
+npm install react react-dom
+
+
+	•	Import in index.js:
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+
+	•	Common error:
+	•	[parcel]: Browser scripts cannot have imports/exports.
+	•	✅ Fix → Add type="module" in <script> inside index.html.
+
+⸻
+
+Why Not CDN for React?
+	•	Managing React via npm (node_modules) is easier, version-controlled, and consistent.
+
+⸻
+
+References
+	•	Creating your own Create-React-App.
+	•	Parcel Docs.
+	•	BrowsersList → https://browserslist.dev/
+
+⸻
+
+👉 Quick mental model:
+NPM manages dependencies → Bundler (Parcel) optimizes & ships code → React runs on top with proper imports & setup.
+
+⸻-------------------------
 
 #### Refer Chapter 02 - Assignment - Igniting our App - for more questions
 ## 1.🔹 What are Parcel and Webpack?
