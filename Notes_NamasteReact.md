@@ -811,6 +811,205 @@ A: Yes. It can be deleted anytime and restored by running npm install or yarn in
 A: Due to nested dependencies and multiple versions of the same package required by different libraries.
 
 ----------------
+# Episode 03: Laying the foundation
+## Topics covered 
+- JSX, React Components
+- class-based vs functional components
+
+##Got it 👍 You want me to optimize and expand your notes (without excluding anything) so they are clear, structured, and complete for your GitHub documentation. I’ll keep everything you wrote but reorganize, polish wording, and add missing points.
+
+Here’s the optimized version:
+
+⸻
+
+🚀 React Basics (Namaste React Notes)
+
+1. Scripts in package.json
+
+"scripts": {
+  "start": "parcel index.html",
+  "build": "parcel build index.html",
+  "test": "echo \"Error: no test specified\" && exit 1"
+}
+
+	•	npm run start (or simply npm start) → starts the development server.
+	•	npm run build → builds the project for production.
+	•	For any project → go to package.json, check available scripts, and run accordingly.
+
+⸻
+
+2. React Elements
+	•	React elements are the smallest building blocks in React → they are plain JavaScript objects.
+	•	React elements are equivalent to DOM elements, but they don’t become HTML until rendered.
+	•	Example:
+
+const heading = React.createElement("h1", { id: "heading" }, "Namaste React");
+console.log(heading); // Outputs a JS object
+
+
+⸻
+
+3. ReactDOM
+	•	Since we deal with browsers, we use:
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(heading);
+
+	•	This mounts our React elements/components into the real DOM.
+
+⸻
+
+4. JSX (JavaScript XML)
+	•	Created by Facebook developers to simplify writing React code.
+	•	JSX is not part of React → React can work without JSX.
+	•	JSX is syntactic sugar for React.createElement.
+	•	JSX looks like HTML but it’s not HTML inside JS → it’s a JS syntax extension.
+
+Example:
+
+// Without JSX
+const heading = React.createElement("h1", { id: "heading" }, "Namaste React");
+
+// With JSX
+const jsxHeading = <h1 id="jsx-heading">Namaste React</h1>;
+
+👉 Both return JavaScript objects, not HTML. They become real DOM elements only when rendered.
+
+⸻
+
+5. JS Engine & JSX Compilation
+	•	JS engine understands ECMAScript (ES6), but browsers don’t understand JSX directly.
+	•	Then how does JSX work?
+	•	Parcel (bundler) → calls Babel (compiler).
+	•	Babel transpiles JSX → React.createElement.
+	•	Example:
+
+<h1>Hello</h1>
+
+becomes
+
+React.createElement("h1", null, "Hello");
+
+
+	•	Babel:
+	•	Open-source JavaScript compiler.
+	•	Converts modern JS/JSX into browser-compatible JS.
+	•	Handles transpilation (syntax conversion) and polyfills.
+
+⸻
+
+6. JSX Syntax Rules
+	•	Attributes follow camelCase (e.g., className, tabIndex).
+	•	Single-line JSX is valid directly.
+	•	Multi-line JSX must be wrapped inside () to avoid automatic semicolon insertion.
+	•	Example:
+
+const heading = (
+  <div>
+    <h1>Hello</h1>
+    <p>Namaste React</p>
+  </div>
+);
+
+
+⸻
+
+7. React Developer Extensions
+
+Recommended VSCode extensions:
+	•	Prettier (Code formatter)
+	•	Bracket Pair Colorizer
+	•	ESLint
+	•	Better Comments
+
+⸻
+
+8. Advantages of JSX
+	•	Easier to read and write (HTML-like syntax).
+	•	Prevents injection attacks → React automatically sanitizes data inside {}.
+	•	Makes debugging simpler (error messages point to JSX).
+	•	Enables component composition and cleaner code.
+
+⸻
+
+9. React Components
+
+Types of Components:
+	1.	Functional Component – A function that returns JSX (or React elements).
+	2.	Class Component – Older way using ES6 classes (less common in modern React).
+
+Example (Functional Component & Composition):
+
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+const Title = () => <h1 className="heading">Namaste React</h1>;
+
+const HeadingComponent = () => (
+  <div>
+    <Title /> {/* Component Composition */}
+    <h2>This is a Namaste React Functional Component</h2>
+    <h3>Another line</h3>
+  </div>
+);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<HeadingComponent />);
+
+
+⸻
+
+10. Component Composition
+	•	Using one component inside another.
+	•	Example: HeadingComponent renders Title.
+
+⸻
+
+11. Ways to Call Components
+
+Since components are functions, you can call them in multiple ways:
+
+const HeadingComponent = () => (
+  <div>
+    {Title()}        {/* Call as function */}
+    <Title />        {/* JSX shorthand */}
+    <Title></Title>  {/* Full JSX tag */}
+  </div>
+);
+
+
+⸻
+
+12. Superpowers of JSX
+	•	Anything inside {} can be JavaScript expression:
+
+const name = "Manish";
+const jsxElement = <h1>Hello {name.toUpperCase()}</h1>;
+
+	•	JSX sanitizes injected values → protects from XSS (Cross-Site Scripting) attacks.
+
+⸻
+
+13. Todo (Deep Dive Later)
+	•	Babel internals: how it parses & converts JSX to AST → then transpiles to React.createElement.
+	•	Parcel pipeline (bundling, minification, caching, HMR).
+	•	Class vs Functional Components (differences & evolution with React Hooks).
+
+⸻
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------
 ### 1. Ensures the component is mounted
 
 By making API calls in `componentDidMount`, you ensure that the component has been rendered and is mounted in the DOM. This is important because some APIs may require access to the DOM or its elements.
