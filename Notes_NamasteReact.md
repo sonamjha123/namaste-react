@@ -938,7 +938,7 @@ const Title = () => (
 🧩 React Components
 	•	Class-based Components
 	•	Functional Components → functions that return JSX or React Elements.
-
+```
 Example: Component Composition
 
 import React from "react";
@@ -961,7 +961,7 @@ root.render(<HeadingComponent />);
 
 export default HeadingComponent;
 
-
+```
 ⸻
 
 🧱 Component Composition
@@ -982,7 +982,7 @@ const element = <h1>Hello, {name}!</h1>;
 ⸻
 
 ⚡ Ways to Call a Component
-
+```
 const HeadingComponent = () => (
   <div>
     {Title()}
@@ -993,7 +993,7 @@ const HeadingComponent = () => (
   </div>
 );
 
-
+```
 ⸻
 
 📌 ToDo
