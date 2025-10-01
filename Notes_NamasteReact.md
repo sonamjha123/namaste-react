@@ -1022,6 +1022,182 @@ const HeadingComponent = () => (
   * How it transpiles JSX to JS
   * Plugins and presets
   * Role in modern React apps
+-----------
+
+# Episode 04:
+## 📌 Flashcards (Quick Review)
+
+* **React App Structure** → Break into components (Header, Body, Footer).
+* **Props vs State** → Props = inputs (read-only), State = local data (mutable).
+* **Functional Mapping** → Use `.map()` to dynamically render lists (e.g., RestaurantCards).
+* **Planning is Key** → Plan component hierarchy & data flow before coding.
+* **Header Component** → Logo + NavItems (space via `justify-content: space-between`).
+* **Body Component** → Search + RestaurantContainer (renders multiple RestaurantCards).
+* **Footer Component** → Copyright, Links, Address, Contact.
+* **Props** → Pass dynamic data like function arguments, accessible via `props` object.
+* **Config-driven UI** → Build UI using config/JSON data → scalable & reusable.
+* **CSS Units**:
+
+  * `%` → Responsive widths/heights.
+  * `rem / em` → Typography & spacing (scales with accessibility).
+  * `px` → Pixel-perfect for icons/borders, not great for responsiveness.
+  * `auto` → Content decides size.
+  * **Best practice** → Use Tailwind responsive classes (`w-full`, `max-w-screen-lg`, `h-[500px]`).
+
+---
+
+## 📖 Detailed Notes
+
+### 🏗️ React App Building
+
+* Always start with **planning the component hierarchy**.
+
+* Example:
+
+  ```plaintext
+  App.js
+   ├── Header (Logo, NavItems)
+   ├── Body
+   │    ├── Search
+   │    └── RestaurantContainer
+   │          └── RestaurantCard (multiple)
+   └── Footer (Copyright, Links, Address, Contact)
+  ```
+
+* Layout tip: To place `Logo` on left and `NavItems` on right → use
+
+  ```css
+  display: flex;
+  justify-content: space-between;
+  ```
+
+---
+
+### 📦 Props vs State
+
+* **Props**
+
+  * Used to pass data from parent → child.
+  * Immutable (read-only).
+  * Analogy: Like passing arguments into a function.
+* **State**
+
+  * Data managed inside a component.
+  * Mutable via `setState` (class) or `useState` (hooks).
+  * Triggers re-render when updated.
+
+---
+
+### 🔁 Functional Mapping
+
+* `.map()` is commonly used in React to render lists.
+
+* Example:
+
+  ```jsx
+  {restaurants.map((res) => (
+    <RestaurantCard key={res.id} {...res} />
+  ))}
+  ```
+
+* Keys ensure efficient reconciliation.
+
+---
+
+### ⚙️ Config-Driven UI
+
+* Instead of hardcoding, drive UI from configuration/JSON.
+* Scalable & reusable.
+* Example:
+
+  ```jsx
+  const navItems = ["Home", "About", "Contact"];
+  {navItems.map((item) => <li key={item}>{item}</li>)}
+  ```
+
+---
+
+### 🎨 CSS Units for Production
+
+* **% (percentage)** → Great for responsive layouts.
+* **rem / em** → For typography & spacing (scales with user preferences).
+* **px** → Best for fine-grained UI control, but not responsive.
+* **auto** → Lets content decide size (flexible).
+* ✅ **Best Practice**: Use utility-first frameworks like **Tailwind CSS** for consistent responsive design:
+
+  ```html
+  <div class="w-full max-w-screen-lg h-[500px]"></div>
+  ```
+
+---
+## 1. **Virtual DOM**
+
+**How to explain in interview:**
+“The Virtual DOM is an in-memory representation of the real DOM. Instead of updating the browser DOM directly on every change, React builds a lightweight copy and figures out the minimal changes needed. Then it efficiently updates only those parts of the real DOM. This makes UI updates faster and more predictable.”
+
+**Example:**
+“If I have a list of 100 items and only one item changes, React won’t re-render the entire list in the browser. It will compare the Virtual DOM with the previous one, detect the difference, and update just that one item in the actual DOM.”
+
+---
+
+## 2. **Reconciliation**
+
+**How to explain in interview:**
+“Reconciliation is the process React uses to figure out which parts of the DOM need to change when the state or props update. It compares the previous Virtual DOM with the new one, and based on a set of heuristics (like comparing element types and keys), it decides whether to update, replace, or reuse elements.”
+
+**Example:**
+“If I change the order of list items but keep the same keys, React knows they’re the same items and just reorders them. Without keys, React would re-render the entire list, which is less efficient.”
+
+---
+
+## 3. **React Fiber Architecture**
+
+**How to explain in interview:**
+“React Fiber is the reimplementation of React’s reconciliation engine. The main idea is that it allows React to break rendering work into small units and spread it across multiple frames. This makes updates more interruptible, so React can prioritize important updates (like user input) over less urgent ones (like rendering a long list).”
+
+**Example:**
+“Before Fiber, React updates were synchronous and could block the UI if a component took too long to render. With Fiber, React can pause work, continue later, or drop work if something more important happens, leading to smoother user experiences.”
+
+---
+
+## 4. **React Without ES6**
+
+**How to explain in interview:**
+“React can be used without modern JavaScript features like ES6 classes. Instead of defining components with classes, you can use `React.createClass()` or functional components. This was more common before ES6 became widely supported.”
+
+**Example:**
+
+```javascript
+// With ES6
+class MyComponent extends React.Component {
+  render() {
+    return <div>Hello</div>;
+  }
+}
+
+// Without ES6
+var MyComponent = React.createClass({
+  render: function() {
+    return <div>Hello</div>;
+  }
+});
+```
+
+**Key point:**
+“This shows React is flexible — you don’t need ES6 features to build components, but ES6 classes and hooks are now the recommended way.”
+
+---
+
+✅ **Interview Tip:**
+After explaining, it’s powerful to add **why it matters in real work**:
+
+* Virtual DOM → performance optimization.
+* Reconciliation → predictable UI updates.
+* Fiber → smooth user experience, responsive apps.
+* React without ES6 → backward compatibility, but modern syntax is preferred.
+
+---
+
 
 ```
 -------------
