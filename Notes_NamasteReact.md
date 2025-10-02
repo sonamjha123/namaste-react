@@ -1197,7 +1197,128 @@ After explaining, it’s powerful to add **why it matters in real work**:
 * React without ES6 → backward compatibility, but modern syntax is preferred.
 
 ---
+# Episode 05
 
+### Namaste Dev Assignment Questions
+Perfect ✅ Let’s create a **polished, interview-ready cheat sheet** based on everything we’ve covered. I’ll make it concise, structured, and easy to recall.
 
+---
+
+# **React & JS Interview Cheat Sheet**
+
+---
+
+## **1️⃣ JavaScript Exports**
+
+**Named Export**
+
+* Multiple exports per file.
+* Must import with the **same name**, or alias using `as`.
+* Example:
+
+```js
+export const add = () => {};
+export const subtract = () => {};
+import { add, subtract } from './math.js';
 ```
--------------
+
+**Default Export**
+
+* Only **one per file**.
+* Can import with **any name**.
+* Example:
+
+```js
+export default function greet() {}
+import hello from './greet.js';
+```
+
+**`* as` Export**
+
+* Imports **all exports into a namespace object**.
+* Both default and named exports are included; default is under `.default`.
+
+```js
+import * as MathUtils from './math.js';
+MathUtils.add();
+MathUtils.default();
+```
+
+---
+
+## **2️⃣ `config.js` File**
+
+* Centralizes configuration values: API endpoints, keys, environment variables, feature flags.
+* Advantages:
+
+  * Improves maintainability.
+  * Avoids hardcoding values across components.
+  * Easier switching between environments (dev/test/prod).
+* Can work with `.env` files for sensitive info.
+
+---
+
+## **3️⃣ React Hooks**
+
+**Definition:**
+
+* Special functions introduced in **React 16.8**.
+* Let functional components “hook into” React features like state and lifecycle.
+* Replace most class component functionality.
+
+**Common Hooks:**
+
+* `useState` → Manage local state. Returns `[value, setter]`.
+* `useEffect` → Perform side effects after render (API calls, subscriptions).
+* `useContext` → Access React context.
+
+**Rules of Hooks:**
+
+1. Call hooks **at the top level** of a component, not inside loops, conditions, or nested functions.
+2. Call hooks only from **React functional components** or custom hooks.
+
+---
+
+## **4️⃣ `useState` Hook**
+
+* Manages state in functional components.
+* Preserves state **between re-renders**.
+* Updates via **setter function**, triggers re-render.
+* Example:
+
+```js
+const [count, setCount] = useState(0);
+setCount(prev => prev + 1); // functional update for multiple increments
+```
+
+**Key Points / Tricky Scenarios:**
+
+* Multiple `setCount(count + 1)` calls may not accumulate because React batches updates → use functional form.
+* Don’t use `useState` inside loops/conditions → breaks hook order.
+
+---
+
+## **5️⃣ `useEffect` vs `useLayoutEffect`**
+
+| Feature          | `useEffect`                      | `useLayoutEffect`                  |
+| ---------------- | -------------------------------- | ---------------------------------- |
+| Timing           | After render is painted          | After DOM updates, before paint    |
+| Blocking         | No (asynchronous)                | Yes (synchronous)                  |
+| Common use cases | API calls, subscriptions, timers | DOM measurements, scroll positions |
+
+> **Rule of thumb:** Use `useEffect` for most cases; `useLayoutEffect` only when layout must be measured/adjusted before the browser paints.
+
+---
+
+## ✅ **Tips for Interview Answers**
+
+1. Give **short definition first**, then an example.
+2. Explain **why** you use something, not just what it does.
+3. Use **correct terminology**: hooks are functions, not components.
+4. If unsure about a rare hook or advanced feature, be honest but show awareness.
+
+---
+
+
+
+Do you want me to make that too?
