@@ -1319,6 +1319,225 @@ setCount(prev => prev + 1); // functional update for multiple increments
 
 ---
 
+# React Fiber Architecture
+
+<details>
+<summary><strong>Why React Fiber?</strong></summary>
+
+React Fiber was developed because the old React couldn’t update the UI quickly enough for **animations**, **smooth scrolling**, and **dragging**.
+
+**Key idea:** **Incremental rendering**—breaking work into small chunks so React can pause, handle urgent updates, and resume. This keeps the app responsive under heavy load.
+
+</details>
+
+<details>
+<summary><strong>Incremental Rendering</strong></summary>
+
+**Concept:** React prioritizes urgent updates (button click) over less urgent ones (background data loading).
+
+**Example:**
+
+> Imagine painting a wall, but someone asks you to open a door. React pauses painting, opens the door, then resumes without losing progress.
+
+**Priority System:** Works like a to-do list; important tasks jump to the top.
+
+**Example Analogy:**
+
+> Grocery store express lane: someone with 1 item goes first; React Fiber prioritizes UI tasks similarly.
+
+</details>
+
+<details>
+<summary><strong>Fiber Structure</strong></summary>
+
+Each **fiber** is like a virtual stack frame holding all info needed for a component. Fibers allow React to pause mid-update and resume exactly where it left off.
+
+**Example:**
+
+> Puzzle where pieces already placed are marked; you can continue without redoing the whole puzzle.
+
+**Pseudo-Code:**
+
+```javascript
+function saveProgress(fiber) {
+  fiber.memoizedProps = fiber.pendingProps;
+  fiber.alternate = cloneFiber(fiber);
+}
+
+function resumeWork(fiber) {
+  fiber.pendingProps = fiber.memoizedProps;
+  processFiber(fiber);
+}
+```
+
+* `memoizedProps`: last processed data
+* `alternate`: backup copy for safe resuming
+
+**Analogy:**
+
+> `memoizedProps` = saved draft, `alternate` = duplicate copy to edit safely.
+
+</details>
+
+<details>
+<summary><strong>Alternate Fibers</strong></summary>
+
+React keeps **two copies** of your UI:
+
+1. **Current** – visible to user
+2. **Work-in-progress** – built in background
+
+When ready, React swaps the work-in-progress with the current tree instantly.
+
+**Example:**
+
+> Editing a photo in a separate file and replacing the old photo with the new one instantly.
+
+</details>
+
+<details>
+<summary><strong>Commit Phase</strong></summary>
+
+Applies changes from work-in-progress tree to real DOM in one pass: updating elements, refs, and lifecycle hooks.
+
+**Example:**
+
+> Rehearsing a play backstage and performing it all at once.
+
+**Steps:**
+
+1. Preparation complete – work-in-progress tree ready
+2. DOM mutations – update/add/remove elements
+3. Ref callbacks – attach/update refs
+4. Lifecycle methods – run hooks like `componentDidMount`, `useEffect`
+
+**Code Example:**
+
+```javascript
+function commitRoot(root) {
+  applyUpdates(root.current);
+  updateRefs(root.current);
+  runEffects(root.current);
+}
+```
+
+**Analogy:**
+
+> Swapping phone case, cleaning screen, and turning it on—all in one quick sequence.
+
+</details>
+
+<details>
+<summary><strong>Fibers & Rendering</strong></summary>
+
+* Each fiber = unit of work for a component
+* Fibers built in work-in-progress tree
+* Commit phase applies changes to DOM
+
+**Example:**
+
+> Fibers = blueprint sheets; commit phase = construction work.
+
+</details>
+
+<details>
+<summary><strong>Advanced Capabilities</strong></summary>
+
+Fiber enables:
+
+* **Concurrent Rendering** – multiple updates prepared without blocking
+* **Error Boundaries** – recover gracefully from errors
+* **Coroutines** – split complex work into smaller tasks
+
+**Example:**
+
+> Concurrent rendering = multiple dishes cooking simultaneously
+> Error boundaries = safety net catching spills
+> Coroutines = prep in small batches
+
+</details>
+
+<details>
+<summary><strong>Concurrent Rendering</strong></summary>
+
+React can work on multiple updates simultaneously without blocking the UI. Work is split into small chunks; urgent updates prioritized.
+
+**Example:**
+
+> Chef preparing several dishes but serving a coffee immediately when ready.
+
+**Pseudo-Code:**
+
+```javascript
+function scheduleTask(task) {
+  if (task.priority === 'high') {
+    runImmediately(task);
+  } else {
+    queueForLater(task);
+  }
+}
+
+function workLoop() {
+  while (hasTasks()) {
+    const nextTask = getHighestPriorityTask();
+    runTask(nextTask);
+  }
+}
+```
+
+**Analogy:**
+
+> Hospital ER triaging patients: critical cases treated first.
+
+</details>
+
+<details>
+<summary><strong>Scheduler & Fibers</strong></summary>
+
+* Tasks tied to fibers
+* High-priority tasks processed first
+* Lower-priority fibers paused and resumed later
+
+**Example:**
+
+> Construction crew pauses garden to fix broken pipe, then resumes garden.
+
+**Priority Determination:**
+
+* High: user interactions (typing, clicking, scrolling)
+* Low: background data fetching
+* Use `startTransition` to hint low-priority updates
+
+**Analogy:**
+
+> Store serves customers at counter first; stocks shelves when idle.
+
+</details>
+
+<details>
+<summary><strong>Fiber Scheduling Summary</strong></summary>
+
+* Work split into small chunks
+* Pausing/resuming possible
+* Urgent tasks first, background tasks wait
+* `startTransition` sets low-priority tasks
+
+</details>
+
+<details>
+<summary><strong>Full Recap</strong></summary>
+
+* Fiber improves UI responsiveness
+* Incremental rendering splits work
+* Fibers store state for pausing
+* Current vs work-in-progress trees
+* Commit phase applies changes fast
+* Advanced features: concurrency, error boundaries, coroutines
+
+</details>
+
+---
+
 
 
 Do you want me to make that too?
