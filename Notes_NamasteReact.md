@@ -1536,8 +1536,40 @@ function workLoop() {
 
 </details>
 
+## How to reply in Interview?
+
+### **Step 1: Start with the problem Fiber solves**
+
+> “React Fiber was introduced to make React apps more **responsive and smooth**, especially for complex updates like animations, scrolling, or large component trees.”
+
 ---
 
+### **Step 2: Explain the main concept**
 
+> “The core idea is **incremental rendering**. React breaks the work into small units so it can **pause low-priority updates**, handle urgent tasks like user clicks, and then resume without losing progress. This keeps the UI snappy.”
 
-Do you want me to make that too?
+---
+
+### **Step 3: Talk about the mechanics (briefly)**
+
+> “Fiber maintains **two trees**: the current tree (what’s displayed) and the work-in-progress tree (being built). Once updates are ready, React performs a **fast commit**, swapping the work-in-progress tree into place, which avoids flickering.”
+
+---
+
+### **Step 4: Optional – Advanced features**
+
+> “Fiber also enables **concurrent rendering**, **error boundaries**, and **coroutines**, which allow React to handle multiple updates, recover from errors gracefully, and break complex updates into smaller chunks.”
+
+---
+
+### **Step 5: Human-friendly analogy (optional)**
+
+> “Think of Fiber like painting a wall but stopping to answer the door—urgent tasks happen first, and nothing is lost in the process.”
+
+---
+
+### **Sample full answer in interview**
+
+> “React Fiber improves UI responsiveness by introducing **incremental rendering**. It splits updates into small units so high-priority actions like clicks or typing are handled immediately, while less urgent updates are paused and resumed later. Fiber uses a **work-in-progress tree** to build the UI off-screen and then commits changes quickly to avoid flickering. It also enables advanced features like **concurrent rendering** and **error boundaries**, ensuring a smooth and resilient UI.”
+
+---
