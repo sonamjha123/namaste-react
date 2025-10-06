@@ -1573,3 +1573,37 @@ function workLoop() {
 > “React Fiber improves UI responsiveness by introducing **incremental rendering**. It splits updates into small units so high-priority actions like clicks or typing are handled immediately, while less urgent updates are paused and resumed later. Fiber uses a **work-in-progress tree** to build the UI off-screen and then commits changes quickly to avoid flickering. It also enables advanced features like **concurrent rendering** and **error boundaries**, ensuring a smooth and resilient UI.”
 
 ---
+Yes! React Fiber does use **sophisticated algorithms** under the hood to manage updates efficiently.
+### **1. Reconciliation Algorithm**
+
+* React Fiber’s main job is to **reconcile** the current UI tree with the new desired state.
+* It compares the **current tree** with the **work-in-progress tree** to figure out what needs to **change, add, or delete**.
+* This is essentially a **tree-diffing algorithm** optimized for **performance and incremental updates**.
+
+---
+
+### **2. Scheduling Algorithm**
+
+* Fiber uses a **priority-based scheduler** to decide **which tasks to process first**.
+* Updates are split into **small units of work** (fibers), and the scheduler picks the **highest-priority tasks** first.
+* Lower-priority tasks are paused and resumed later, ensuring **user interactions feel instantaneous**.
+
+---
+
+### **3. Work Loop**
+
+* Fiber has a **work loop algorithm** that continuously picks tasks from the queue, executes them partially, and checks if it needs to yield to the browser.
+* This is how **concurrent rendering** is achieved—React can interrupt long-running updates to handle urgent ones.
+
+---
+
+### **Summary**
+
+So yes, Fiber uses **algorithms for tree reconciliation, scheduling, and incremental work execution** to make UIs responsive. It’s like combining:
+
+* **Diffing algorithm** → to know what changed
+* **Priority queue algorithm** → to decide what to run first
+* **Work loop algorithm** → to split and resume work efficiently
+
+---
+
