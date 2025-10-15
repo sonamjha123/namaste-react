@@ -1,5 +1,5 @@
-Great question — this is a **core React Router** concept (especially for React Router v6.4+). Let’s break down the difference between:
-
+# REACT ROUTER
+## 1. Difference between
 * `BrowserRouter`
 * `createBrowserRouter`
 * `createHashRouter`
