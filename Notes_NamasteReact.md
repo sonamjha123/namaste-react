@@ -1604,6 +1604,278 @@ So yes, Fiber uses **algorithms for tree reconciliation, scheduling, and increme
 * **Diffing algorithm** → to know what changed
 * **Priority queue algorithm** → to decide what to run first
 * **Work loop algorithm** → to split and resume work efficiently
+-----------------------------------------
+# Episode 11
+- Lifting State
+- Props drilling
+- Context API- Context Provider and Context Consumer
+- If you don’t pass a value to the provider, does it take the default value?
+Coding:
+● Practice React Context with code examples
+● Try out Nested Contexts
+---
+## Difference between Lifting State(shared state across components or making Parent Component as a sindle source of truth) and props drilling in React
+## 1️⃣ Lifting State Up
+
+* **Definition:** Moving state to the **nearest common parent** so multiple components can share or update it.
+* **Purpose:** Make one component the **source of truth**.
+* **Data flow:** Parent holds state → passes it down as props → children can update state via callback functions.
+
+✅ Example:
+
+```jsx
+function Child({ value, setValue }) {
+  return <input value={value} onChange={e => setValue(e.target.value)} />;
+}
+
+function Parent() {
+  const [value, setValue] = React.useState("");
+  return <Child value={value} setValue={setValue} />;
+}
+```
+
+Here:
+
+* State is lifted to `Parent`.
+* Child reads and updates it via props.
+* Only **one level of prop passing**, and the goal is **sharing state**.
+
+---
+
+## 2️⃣ Prop Drilling
+
+* **Definition:** Passing props **through multiple intermediate components** just so a deeply nested child can access them.
+* **Purpose:** Usually not intentional; it happens when a child far down the tree needs data from a parent.
+* **Problem:** Intermediate components may **don’t need that data** but must pass it along.
+
+✅ Example:
+
+```
+<App>
+  <Level1>
+    <Level2>
+      <Level3>
+        <Child />  <-- Needs some data from App
+      </Level3>
+    </Level2>
+  </Level1>
+</App>
+```
+
+```jsx
+function App() {
+  const [value, setValue] = React.useState("hello");
+  return <Level1 value={value} setValue={setValue} />;
+}
+
+function Level1({ value, setValue }) {
+  return <Level2 value={value} setValue={setValue} />;
+}
+
+function Level2({ value, setValue }) {
+  return <Level3 value={value} setValue={setValue} />;
+}
+
+function Level3({ value, setValue }) {
+  return <Child value={value} setValue={setValue} />;
+}
+
+function Child({ value, setValue }) {
+  return <p>{value}</p>;
+}
+```
+
+Here:
+
+* Data is **passed through multiple components** that don’t use it.
+* This is called **prop drilling**.
+
+---
+
+## 3️⃣ Key Differences
+
+| Aspect               | Lifting State Up                      | Prop Drilling                        |
+| -------------------- | ------------------------------------- | ------------------------------------ |
+| Purpose              | Share state among multiple components | Child deep in tree needs parent data |
+| State location       | Moved to nearest common parent        | Usually at top-level parent          |
+| Props passed through | Usually 1-2 levels                    | Many intermediate levels             |
+| Problematic?         | No, intentional                       | Can get messy, hard to maintain      |
+
+---
+
+### ✅ TL;DR
+
+* **Lifting state up** → intentional, clean, designed for **sharing state**.
+* **Prop drilling** → sometimes unavoidable, can be messy, happens when data must go **through many intermediate components**.
+
+> Think of lifting state as **good design**, prop drilling as **pain of deep trees**.
+
+---
+## 🧠 1️⃣ What Problem Does Context API Solve?
+
+Normally, data flows **parent → child → grandchild** through **props**.
+
+But what if the data (like a theme, user info, or language) is needed by **many nested components**?
+
+→ Passing props through every level = **prop drilling** 😩
+
+**Context API** helps you **avoid prop drilling**.
+
+It allows you to:
+
+> Share data globally across components without passing props manually through each level.
+
+---
+
+## ⚙️ 2️⃣ Main Parts of Context API
+
+| Part         | Description                                                                              |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| **Context**  | A global object created using `React.createContext()`                                    |
+| **Provider** | Component that *provides* the data to all its children                                   |
+| **Consumer** | Component that *uses* the data from the context (via `useContext` or `Context.Consumer`) |
+
+---
+
+## 🧩 3️⃣ Step-by-Step Example
+
+Let’s say you want to share a **theme** (`light` or `dark`) across your app.
+
+### Step 1: Create Context
+
+```jsx
+import React from "react";
+
+const ThemeContext = React.createContext();
+export default ThemeContext;
+```
+
+---
+
+### Step 2: Create a Provider Component
+
+```jsx
+import React, { useState } from "react";
+import ThemeContext from "./ThemeContext";
+
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === "light" ? "dark" : "light"));
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export default ThemeProvider;
+```
+
+✅ `ThemeContext.Provider` wraps your entire app (or a section).
+✅ The `value` prop holds the data you want to share (`theme`, `toggleTheme`).
+
+---
+
+### Step 3: Use (Consume) Context in a Component
+
+#### 🧠 Option 1: Using `useContext` (modern, easier)
+
+```jsx
+import React, { useContext } from "react";
+import ThemeContext from "./ThemeContext";
+
+function Navbar() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  return (
+    <nav style={{
+      backgroundColor: theme === "light" ? "#fff" : "#333",
+      color: theme === "light" ? "#000" : "#fff",
+      padding: "10px"
+    }}>
+      <p>Current theme: {theme}</p>
+      <button onClick={toggleTheme}>Toggle Theme</button>
+    </nav>
+  );
+}
+
+export default Navbar;
+```
+
+---
+
+### Step 4: Wrap Your App with the Provider
+
+```jsx
+import React from "react";
+import ThemeProvider from "./ThemeProvider";
+import Navbar from "./Navbar";
+
+function App() {
+  return (
+    <ThemeProvider>
+      <Navbar />
+    </ThemeProvider>
+  );
+}
+
+export default App;
+```
+
+✅ Now `Navbar` can directly access `theme` and `toggleTheme` **without** prop drilling.
+
+---
+
+### 🧠 Option 2: Using Consumer (older syntax)
+
+Before React Hooks, you used a **Consumer** component:
+
+```jsx
+import ThemeContext from "./ThemeContext";
+
+function Navbar() {
+  return (
+    <ThemeContext.Consumer>
+      {({ theme, toggleTheme }) => (
+        <div style={{
+          backgroundColor: theme === "light" ? "#fff" : "#333",
+          color: theme === "light" ? "#000" : "#fff"
+        }}>
+          <p>Theme: {theme}</p>
+          <button onClick={toggleTheme}>Toggle Theme</button>
+        </div>
+      )}
+    </ThemeContext.Consumer>
+  );
+}
+```
+
+✅ Still works, but `useContext` is simpler and preferred in modern React.
+
+---
+
+## 🎯 5️⃣ Summary
+
+| Concept                   | Description                                           |
+| ------------------------- | ----------------------------------------------------- |
+| **Context API**           | Lets you share state globally across components       |
+| **Provider**              | Wraps children and supplies the context value         |
+| **Consumer / useContext** | Lets components read and use the context value        |
+| **Goal**                  | Avoid prop drilling, manage global/shared data easily |
+
+---
+
+### 🧠 Common Use Cases
+
+* Theme (light/dark)
+* Auth state (user logged in/out)
+* Language / localization
+* Global settings
+* Shopping cart data
 
 ---
 
