@@ -352,13 +352,13 @@ app.use(cors({ origin: 'https://websiteA.com', credentials: true }));
 ```
 ------------------------------------------------------------------------------------------------------
 
-## What exactly is React : createElement, createRoot, render 
+#### What exactly is React : createElement, createRoot, render 
 
 Here’s an **optimized version** of your notes for GitHub — clean, well-structured, and ready for a repository. I preserved all your content but organized it neatly with comments and formatting for clarity.
 ---
-# React Basic Example Notes
+#### React Basic Example Notes
 
-## index.html
+##### index.html
 
 ```html
 <!DOCTYPE html>
@@ -389,7 +389,7 @@ Here’s an **optimized version** of your notes for GitHub — clean, well-struc
 
 ---
 
-## index.js
+##### index.js
 
 ```javascript
 /*
@@ -433,7 +433,7 @@ root.render(heading);
 
 ---
 
-### ✅ Notes / Key Points
+##### ✅ Notes / Key Points
 
 1. **React.createElement** creates a React element (JavaScript object) that React converts to actual DOM elements in the browser.
 2. **Rendering**: `ReactDOM.createRoot(...).render(element)` is used to render React elements.
@@ -445,8 +445,7 @@ root.render(heading);
 Exactly ✅ — that’s how **React works with the DOM**. Let me explain clearly.
 
 ---
-
-### 🔹 Key Idea
+##### 🔹 Key Idea
 
 React **only controls the DOM elements inside the root container** you specify.
 
