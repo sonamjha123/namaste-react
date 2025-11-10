@@ -352,9 +352,7 @@ app.use(cors({ origin: 'https://websiteA.com', credentials: true }));
 ```
 ------------------------------------------------------------------------------------------------------
 
-#### What exactly is React : createElement, createRoot, render 
-
-Here’s an **optimized version** of your notes for GitHub — clean, well-structured, and ready for a repository. I preserved all your content but organized it neatly with comments and formatting for clarity.
+### What exactly is React : createElement, createRoot, render 
 ---
 #### React Basic Example Notes
 
